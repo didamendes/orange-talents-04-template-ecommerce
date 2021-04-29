@@ -24,9 +24,9 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(String login, String senha) {
+    public Usuario(String login, SenhaLimpa senhaLimpa) {
         this.login = login;
-        this.senha = senha;
+        this.senha = senhaLimpa.toHash();
     }
 
     public Long getId() {

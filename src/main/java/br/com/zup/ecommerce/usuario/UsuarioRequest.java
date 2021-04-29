@@ -6,6 +6,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 public class UsuarioRequest {
 
@@ -14,7 +15,7 @@ public class UsuarioRequest {
     private String login;
 
     @NotBlank
-    @Min(6)
+    @Size(min = 6)
     private String senha;
 
     public String getLogin() {
@@ -26,8 +27,7 @@ public class UsuarioRequest {
     }
 
     public Usuario converter() {
-        String senhaEncode = new BCryptPasswordEncoder().encode(senha);
-        return new Usuario(login, senhaEncode);
+        return new Usuario(login, new SenhaLimpa(senha));
     }
 
 }
