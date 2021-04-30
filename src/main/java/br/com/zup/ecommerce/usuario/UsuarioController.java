@@ -13,8 +13,12 @@ import javax.validation.Valid;
 @RequestMapping("/usuarios")
 public class UsuarioController {
 
-    @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    public UsuarioController(UsuarioRepository usuarioRepository) {
+        this.usuarioRepository = usuarioRepository;
+    }
 
     @PostMapping
     public ResponseEntity<UsuarioResponse> salvar(@Valid @RequestBody UsuarioRequest usuarioRequest) {

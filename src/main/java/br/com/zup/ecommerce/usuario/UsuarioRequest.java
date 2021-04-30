@@ -1,5 +1,6 @@
 package br.com.zup.ecommerce.usuario;
 
+import br.com.zup.ecommerce.validatores.EmailDuplicado;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -12,6 +13,7 @@ public class UsuarioRequest {
 
     @NotBlank
     @Email
+    @EmailDuplicado(tabela = Usuario.class, campo = "login")
     private String login;
 
     @NotBlank
