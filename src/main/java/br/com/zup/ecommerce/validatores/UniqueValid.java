@@ -9,12 +9,12 @@ import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.ElementType.TYPE_USE;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Constraint(validatedBy = { EmailDuplicadoValidator.class })
+@Constraint(validatedBy = { UniqueValidValidator.class })
 @Target({ METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE })
 @Retention(RUNTIME)
-public @interface EmailDuplicado {
+public @interface UniqueValid {
 
-    String message() default "email ja existente";
+    String message() default "ja existente";
 
     Class<?>[] groups() default { };
 

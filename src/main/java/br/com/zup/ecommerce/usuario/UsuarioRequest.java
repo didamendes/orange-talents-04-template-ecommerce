@@ -1,11 +1,8 @@
 package br.com.zup.ecommerce.usuario;
 
-import br.com.zup.ecommerce.validatores.EmailDuplicado;
-import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import br.com.zup.ecommerce.validatores.UniqueValid;
 
 import javax.validation.constraints.Email;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -13,7 +10,7 @@ public class UsuarioRequest {
 
     @NotBlank
     @Email
-    @EmailDuplicado(tabela = Usuario.class, campo = "login")
+    @UniqueValid(tabela = Usuario.class, campo = "login", message = "Email duplicado")
     private String login;
 
     @NotBlank

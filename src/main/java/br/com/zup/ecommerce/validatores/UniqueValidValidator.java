@@ -1,17 +1,11 @@
 package br.com.zup.ecommerce.validatores;
 
-import br.com.zup.ecommerce.usuario.UsuarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
-import java.util.List;
 
-public class EmailDuplicadoValidator implements ConstraintValidator<EmailDuplicado, String> {
+public class UniqueValidValidator implements ConstraintValidator<UniqueValid, String> {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -20,7 +14,7 @@ public class EmailDuplicadoValidator implements ConstraintValidator<EmailDuplica
     private String campo;
 
     @Override
-    public void initialize(EmailDuplicado constraintAnnotation) {
+    public void initialize(UniqueValid constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
         this.campo = constraintAnnotation.campo();
         this.tabela = constraintAnnotation.tabela();
