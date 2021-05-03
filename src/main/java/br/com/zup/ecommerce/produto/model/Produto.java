@@ -7,7 +7,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Produto {
@@ -41,6 +43,9 @@ public class Produto {
 
     @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST, orphanRemoval = true)
     private Set<Caracteristica> caracteristicas;
+
+    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+    private Set<Foto> fotos = new HashSet<>();
 
     @Deprecated
     public Produto() {}
@@ -92,5 +97,14 @@ public class Produto {
 
     public void setCaracteristicas(Set<Caracteristica> caracteristicas) {
         this.caracteristicas = caracteristicas;
+    }
+
+    public void adicionarImagem(Set<String> fotosLink) {
+        Set<Foto> fotos = fotosLink.stream().map(link -> new Foto(link, this)).collect(Collectors.toSet());
+        this.fotos.addAll(fotos);
+    }
+
+    public boolean isPertenceUsuario(Usuario usuario) {
+        return this.getUsuario().getId().equals(usuario.getId());
     }
 }
