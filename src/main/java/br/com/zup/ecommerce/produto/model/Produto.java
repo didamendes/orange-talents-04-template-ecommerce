@@ -1,6 +1,8 @@
 package br.com.zup.ecommerce.produto.model;
 
 import br.com.zup.ecommerce.categoria.Categoria;
+import br.com.zup.ecommerce.produto.opiniao.Opiniao;
+import br.com.zup.ecommerce.produto.pergunta.Pergunta;
 import br.com.zup.ecommerce.usuario.Usuario;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -14,97 +16,117 @@ import java.util.stream.Collectors;
 @Entity
 public class Produto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Column(name = "nome",nullable = false)
-    private String nome;
+	@Column(name = "nome", nullable = false)
+	private String nome;
 
-    @Column(name = "descricao", nullable = false, length = 1000)
-    private String descricao;
+	@Column(name = "descricao", nullable = false, length = 1000)
+	private String descricao;
 
-    @Column(name = "valor", nullable = false)
-    private BigDecimal valor;
+	@Column(name = "valor", nullable = false)
+	private BigDecimal valor;
 
-    @Column(name = "quantidade", nullable = false)
-    private Integer quantidade;
+	@Column(name = "quantidade", nullable = false)
+	private Integer quantidade;
 
-    @CreationTimestamp
-    private OffsetDateTime dataCriacao;
+	@CreationTimestamp
+	private OffsetDateTime dataCriacao;
 
-    @ManyToOne
-    @JoinColumn(name = "categoria_id", nullable = false)
-    private Categoria categoria;
+	@ManyToOne
+	@JoinColumn(name = "categoria_id", nullable = false)
+	private Categoria categoria;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+	@ManyToOne
+	@JoinColumn(name = "usuario_id", nullable = false)
+	private Usuario usuario;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST, orphanRemoval = true)
-    private Set<Caracteristica> caracteristicas;
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.PERSIST, orphanRemoval = true)
+	private Set<Caracteristica> caracteristicas;
 
-    @OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
-    private Set<Foto> fotos = new HashSet<>();
+	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
+	private Set<Foto> fotos = new HashSet<>();
 
-    @Deprecated
-    public Produto() {}
+	@OneToMany(mappedBy = "produto")
+	private Set<Opiniao> opinioes;
 
-    public Produto(String nome, String descricao, BigDecimal valor, Integer quantidade, Categoria categoria, Usuario usuario) {
-        this.nome = nome;
-        this.descricao = descricao;
-        this.valor = valor;
-        this.quantidade = quantidade;
-        this.categoria = categoria;
-        this.usuario = usuario;
-    }
+	@OneToMany(mappedBy = "produto")
+	private Set<Pergunta> perguntas;
 
-    public Long getId() {
-        return id;
-    }
+	@Deprecated
+	public Produto() {
+	}
 
-    public String getNome() {
-        return nome;
-    }
+	public Produto(String nome, String descricao, BigDecimal valor, Integer quantidade, Categoria categoria,
+			Usuario usuario) {
+		this.nome = nome;
+		this.descricao = descricao;
+		this.valor = valor;
+		this.quantidade = quantidade;
+		this.categoria = categoria;
+		this.usuario = usuario;
+	}
 
-    public String getDescricao() {
-        return descricao;
-    }
+	public Long getId() {
+		return id;
+	}
 
-    public BigDecimal getValor() {
-        return valor;
-    }
+	public String getNome() {
+		return nome;
+	}
 
-    public Integer getQuantidade() {
-        return quantidade;
-    }
+	public String getDescricao() {
+		return descricao;
+	}
 
-    public OffsetDateTime getDataCriacao() {
-        return dataCriacao;
-    }
+	public BigDecimal getValor() {
+		return valor;
+	}
 
-    public Categoria getCategoria() {
-        return categoria;
-    }
+	public Integer getQuantidade() {
+		return quantidade;
+	}
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
+	public OffsetDateTime getDataCriacao() {
+		return dataCriacao;
+	}
 
-    public Set<Caracteristica> getCaracteristicas() {
-        return caracteristicas;
-    }
+	public Categoria getCategoria() {
+		return categoria;
+	}
 
-    public void setCaracteristicas(Set<Caracteristica> caracteristicas) {
-        this.caracteristicas = caracteristicas;
-    }
+	public Usuario getUsuario() {
+		return usuario;
+	}
 
-    public void adicionarImagem(Set<String> fotosLink) {
-        Set<Foto> fotos = fotosLink.stream().map(link -> new Foto(link, this)).collect(Collectors.toSet());
-        this.fotos.addAll(fotos);
-    }
+	public Set<Caracteristica> getCaracteristicas() {
+		return caracteristicas;
+	}
 
-    public boolean isPertenceUsuario(Usuario usuario) {
-        return this.getUsuario().getId().equals(usuario.getId());
-    }
+	public void setCaracteristicas(Set<Caracteristica> caracteristicas) {
+		this.caracteristicas = caracteristicas;
+	}
+
+	public Set<Foto> getFotos() {
+		return fotos;
+	}
+
+	public Set<Opiniao> getOpinioes() {
+		return opinioes;
+	}
+
+	public Set<Pergunta> getPerguntas() {
+		return perguntas;
+	}
+
+	public void adicionarImagem(Set<String> fotosLink) {
+		Set<Foto> fotos = fotosLink.stream().map(link -> new Foto(link, this)).collect(Collectors.toSet());
+		this.fotos.addAll(fotos);
+	}
+
+	public boolean isPertenceUsuario(Usuario usuario) {
+		return this.getUsuario().getId().equals(usuario.getId());
+	}
 }
